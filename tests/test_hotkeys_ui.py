@@ -62,3 +62,43 @@ def test_ocr_text_is_escaped_in_note(analyzer):
     markup = result_html(result)
     assert "<script>" not in markup
     assert "&lt;script&gt;" in markup
+
+
+@pytest.mark.parametrize("previous_text", ["", "中文"])
+def test_failed_lookup_still_allows_manual_correction(qtbot, analyzer, previous_text):
+    note = Note()
+    qtbot.addWidget(note)
+    note.open_at(QPoint(10, 10), QRect(0, 0, 1000, 800))
+    if previous_text:
+        note.show_result(analyzer.analyze(previous_text))
+        note.show_loading()
+    note.show_error("Recognition failed")
+    assert note.edit_button.isEnabled()
+    note.toggle_editor()
+    assert note.edit_panel.isVisible()
+    assert note.editor.toPlainText() == previous_text
+    note.editor.setPlainText("学习")
+    with qtbot.waitSignal(note.edited) as signal:
+        note.apply_edit()
+    assert signal.args == ["学习"]
+    note.show_loading()
+    note.show_error("Correction failed")
+    note.toggle_editor()
+    assert note.editor.toPlainText() == "学习"
+
+
+def test_library_refresh_clears_a_replaced_selection(qtbot, analyzer, tmp_path):
+    from chinese_screen_dictionary.storage import VocabularyStore
+    from chinese_screen_dictionary.ui import Library
+    store = VocabularyStore(tmp_path / "words.db")
+    store.replace_lookup("first", analyzer.analyze("学习"))
+    store.replace_lookup("second", analyzer.analyze("中文"))
+    library = Library(store)
+    qtbot.addWidget(library)
+    library.search.setText("学习")
+    library.table.selectRow(0)
+    assert "学习" in library.context.toPlainText()
+    library.search.setText("中文")
+    assert library.table.currentRow() == -1
+    assert not library.table.selectedItems()
+    store.close()

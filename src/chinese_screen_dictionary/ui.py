@@ -155,6 +155,7 @@ class Note(QWidget):
         self.direction.blockSignals(False)
         self.result = None
         self.edit_panel.hide()
+        self.editor.clear()
         self.show_loading("Reading selected text…")
         self.show()
         # Showing the widget can enlarge it to the layout's minimum size.
@@ -169,6 +170,7 @@ class Note(QWidget):
 
     def show_result(self, result: Analysis, save_error=""):
         self.result = result
+        self.editor.setPlainText(result.text)
         self.browser.setHtml(result_html(result))
         self.edit_button.setEnabled(True)
         self.copy_button.setEnabled(True)
@@ -177,15 +179,13 @@ class Note(QWidget):
         self.status.setText(save_error or f"{count} vocabulary item{'s' if count != 1 else ''} saved · {result.direction} · {result.elapsed:.1f}s")
 
     def show_error(self, message):
-        self.browser.setHtml(f'<p style="font-size:18px">{esc(message)}</p><p>Select again, or repair language models from the tray menu.</p>')
-        self.status.setText("Nothing saved")
+        self.browser.setHtml(f'<p style="font-size:18px">{esc(message)}</p><p>Use Edit text to retry, select again, or repair language models from the tray menu.</p>')
+        self.status.setText("This attempt was not saved. Previous vocabulary is unchanged.")
         self.direction.setEnabled(False)
-        self.edit_button.setEnabled(False)
+        self.edit_button.setEnabled(True)
+        self.copy_button.setEnabled(False)
 
     def toggle_editor(self):
-        if not self.result:
-            return
-        self.editor.setPlainText(self.result.text)
         self.edit_panel.setVisible(not self.edit_panel.isVisible())
         if self.edit_panel.isVisible():
             self.activateWindow()
@@ -257,6 +257,9 @@ class Library(QDialog):
         self.refresh()
 
     def refresh(self, *_):
+        # A row index may refer to a different word after filtering or sorting.
+        self.table.setCurrentCell(-1, -1)
+        self.table.clearSelection()
         self.rows = self.store.list_entries(self.tabs.currentIndex() == 1, self.search.text())
         self.table.setRowCount(len(self.rows))
         for i, row in enumerate(self.rows):
