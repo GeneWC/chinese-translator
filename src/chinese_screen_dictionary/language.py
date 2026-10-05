@@ -24,7 +24,6 @@ def tone_pinyin(numbered: str) -> str:
 class ChineseDictionary:
     def __init__(self, path: Path):
         self.entries = defaultdict(list)
-        self.pairs = {}
         self.traditional_only = set()
         self.max_word = 1
         opener = gzip.open if path.suffix == ".gz" else open
@@ -39,7 +38,6 @@ class ChineseDictionary:
                 for form in {traditional, simplified}:
                     if (pair, sense) not in self.entries[form]:
                         self.entries[form].append((pair, sense))
-                    self.pairs.setdefault(form, pair)
                 self.max_word = max(self.max_word, len(traditional), len(simplified))
                 for t, s in zip(traditional, simplified):
                     if t != s:
@@ -49,10 +47,11 @@ class ChineseDictionary:
         values = self.entries.get(surface, [])
         if not values:
             return None
-        # Prefer the spelling's first explicit pair. Never collapse unrelated
-        # simplified/traditional variants via a general script conversion.
-        pair = self.pairs[surface]
-        senses = list(dict.fromkeys(sense for p, sense in values if p == pair))
+        # A simplified spelling can have several traditional forms/readings.
+        # Keep all matching senses; prefer the literal simplified spelling when
+        # the surface itself is both a simplified and a traditional dictionary form.
+        pair = next((pair for pair, _ in values if pair[0] == surface), values[0][0])
+        senses = list(dict.fromkeys(sense for _, sense in values))
         return pair, senses
 
 
@@ -105,7 +104,7 @@ class LanguageAnalyzer:
                 if found:
                     (simplified, traditional), senses = found
                     pinyin = senses[0].pinyin
-                    key = f"cedict:{simplified}|{traditional}"
+                    key = f"cedict:{simplified}"
                 else:
                     simplified = traditional = token
                     senses = []

@@ -16,6 +16,13 @@ CEDICT = """我 我 [wo3] /I/me/
 行 行 [hang2] /row/profession/
 你好 你好 [ni3 hao3] /hello/
 謝謝 谢谢 [xie4 xie5] /thanks/
+發 发 [fa1] /to send out/
+髮 发 [fa4] /hair/
+裏面 里面 [li3 mian4] /variant of 裡面|里面[li3 mian4]/
+裡面 里面 [li3 mian4] /inside/interior/
+乹 干 [gan1] /old variant of 乾|干[gan1]/
+乾 干 [gan1] /dry/
+乾 乾 [qian2] /heaven/
 """
 
 
