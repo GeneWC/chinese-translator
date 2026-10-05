@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chinese-screen-dictionary"
+version = "0.1.0"
+description = "Offline Chinese screen reader and personal vocabulary dictionary for Windows"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "PySide6", "rapidocr", "onnxruntime", "argostranslate", "pypinyin", "jieba"
+]
+
+[project.gui-scripts]
+chinese-screen-dictionary = "chinese_screen_dictionary.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+chinese_screen_dictionary = ["assets/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+qt_api = "pyside6"
+markers = ["integration: requires downloaded language models"]

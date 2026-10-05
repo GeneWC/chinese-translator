@@ -1,0 +1,42 @@
+[
+  {
+    "name": "ch_PP-OCRv5_det_mobile.onnx",
+    "label": "Chinese text detection",
+    "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/det/ch_PP-OCRv5_det_mobile.onnx",
+    "kind": "onnx",
+    "sha256": "4d97c44a20d30a81aad087d6a396b08f786c4635742afc391f6621f5c6ae78ae",
+    "size": 4819576
+  },
+  {
+    "name": "ch_PP-OCRv5_rec_server.onnx",
+    "label": "Chinese text recognition",
+    "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv5/rec/ch_PP-OCRv5_rec_server.onnx",
+    "kind": "onnx",
+    "sha256": "e09385400eaaaef34ceff54aeb7c4f0f1fe014c27fa8b9905d4709b65746562a",
+    "size": 84577022
+  },
+  {
+    "name": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+    "label": "Text orientation",
+    "url": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+    "kind": "onnx",
+    "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+    "size": 585532
+  },
+  {
+    "name": "translate-zh_en-1_9.argosmodel",
+    "label": "Simplified Chinese translation",
+    "url": "https://argos-net.com/v1/translate-zh_en-1_9.argosmodel",
+    "kind": "argos",
+    "sha256": "62e7af5a3a48b530e47b7b3e5c78c2de79073ecd815750d2bf3ab35b4a67da2d",
+    "size": 74481402
+  },
+  {
+    "name": "translate-zt_en-1_9.argosmodel",
+    "label": "Traditional Chinese translation",
+    "url": "https://argos-net.com/v1/translate-zt_en-1_9.argosmodel",
+    "kind": "argos",
+    "sha256": "a9ea826d801f059dd47f1f47b6c1dc9d762519a80ea3afd2a982130a42a25486",
+    "size": 74498034
+  }
+]
