@@ -10,6 +10,8 @@ Open **ChineseScreenDictionary.exe** in `dist/ChineseScreenDictionary`.
 Keep the executable together with its `_internal` folder. You do not need Python
 to use this portable build. The yellow **中** icon appears in the Windows system
 tray (possibly under the tray's up-arrow).
+If you cloned the source from GitHub, follow **Develop and test** below to build
+the portable folder first.
 
 On a new computer, click **Download models** in the setup window. This downloads
 about **228 MiB** of verified OCR and translation models; allow about **450 MiB**
@@ -42,7 +44,12 @@ to close it completely. If a model is damaged, choose **Download / repair models
   punctuation. It appears in the **Single characters** tab.
 - Explicit CC-CEDICT simplified/traditional pairs share a count. The source
   spelling and sentence remain available in the entry's context.
+- Counts track dictionary spellings rather than individual senses. Variant
+  spellings group by their explicit simplified headword; alternate readings
+  remain available. Existing saved entries are combined automatically on upgrade.
 - Correcting a lookup replaces its contribution; it does not create another lookup.
+- If recognition or a correction fails, **Edit text** remains available and
+  keeps your draft for retrying. Previously saved vocabulary remains intact.
 - Dismissed work that has not completed never saves or reopens a note.
 - Search accepts Chinese, accented pinyin, or English. Select an entry to inspect
   its context; **Delete selected entry** removes that entry and its count.
@@ -121,10 +128,11 @@ and library attribution.
 
 ## Validation on this computer
 
-On October 5, 2026, all **27 automated tests** passed, covering vocabulary counts,
+On October 5, 2026, all **32 automated tests** passed, covering vocabulary counts,
 correction rollback, restart persistence, reading order, selection masks, popup
-placement, shortcut conflicts, and cancelled results. A deliberately broken
-cancellation guard was also rejected by its regression test.
+placement, shortcut conflicts, cancelled results, ambiguous readings, and migration
+of existing variant entries. Deliberately broken cancellation and migration
+guards were rejected by their regression tests.
 
 The portable executable passed **9 real-model checks** with Python socket
 connections blocked: a character, a phrase, a sentence, multiline text,
